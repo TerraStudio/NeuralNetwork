@@ -6,9 +6,9 @@ public class NeuralNetwork {
 	private ArrayList<Neuron> inputLayer, hiddenLayer, outputLayer;
 	private ArrayList<Synapse> ihSynpases, hoSynapses;
 
-	private float learnParamter;
+	private float learnParameter, momentum;
 
-	public NeuralNetwork(int inputSize, int hiddenSize, int outputSize, float learnParamter) {
+	public NeuralNetwork(int inputSize, int hiddenSize, int outputSize, float learnParameter, float momentum) {
 		// create layers
 		createLayers(inputSize, hiddenSize, outputSize);
 
@@ -16,7 +16,8 @@ public class NeuralNetwork {
 		connectLayers();
 
 		// apply learn values
-		this.learnParamter = learnParamter;
+		this.learnParameter = learnParameter;
+		this.momentum = momentum;
 	}
 
 	// feedforward data
@@ -99,12 +100,14 @@ public class NeuralNetwork {
 			// change weight
 			// between hidden and output layer
 			for (Synapse s : hoSynapses) {
-				s.setWeight(s.getWeight() + learnParamter * s.getTo().getError() * s.getFrom().getOutput());
+				s.setWeight(s.getWeight() + learnParameter * s.getTo().getError() * s.getFrom().getOutput() + s.getPreviousDeltaWeight() * momentum);
+				s.setPreviousDeltaWeight(learnParameter * s.getTo().getError() * s.getFrom().getOutput() + s.getPreviousDeltaWeight() * momentum);
 			}
 
 			// between input and hidden layer
 			for (Synapse s : ihSynpases) {
-				s.setWeight(s.getWeight() + learnParamter * s.getTo().getError() * s.getFrom().getOutput());
+				s.setWeight(s.getWeight() + learnParameter * s.getTo().getError() * s.getFrom().getOutput() + s.getPreviousDeltaWeight() * momentum);
+				s.setPreviousDeltaWeight(learnParameter * s.getTo().getError() * s.getFrom().getOutput() + s.getPreviousDeltaWeight() * momentum);
 			}
 			
 			//calculate global error

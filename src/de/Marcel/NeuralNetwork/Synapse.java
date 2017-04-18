@@ -2,7 +2,7 @@ package de.Marcel.NeuralNetwork;
 
 public class Synapse {
 	private Neuron from, to;
-	private float weight, previousWeight;
+	private float weight, previousDeltaWeight;
 	
 	public Synapse (Neuron from, Neuron to) {
 		this.from = from;
@@ -10,7 +10,7 @@ public class Synapse {
 		
 		//set random weight between -1 and 1
 		this.weight = (float) (Math.random() * 2 - 1);
-		this.previousWeight = 0;
+		this.previousDeltaWeight = 0;
 	}
 	
 	//GETTER
@@ -22,8 +22,8 @@ public class Synapse {
 		return to;
 	}
 	
-	public float getPreviousWeight() {
-		return previousWeight;
+	public float getPreviousDeltaWeight() {
+		return previousDeltaWeight;
 	}
 	
 	public float getWeight() {
@@ -39,8 +39,8 @@ public class Synapse {
 		this.to = to;
 	}
 	
-	public void setPreviousWeight(float previousWeight) {
-		this.previousWeight = previousWeight;
+	public void setPreviousDeltaWeight(float previousDeltaWeight) {
+		this.previousDeltaWeight = previousDeltaWeight;
 	}
 	
 	public void setWeight(float weight) {
